@@ -1,9 +1,9 @@
-import db from "../../../db";
-import { advocates } from "../../../db/schema";
-import { advocateData } from "../../../db/seed/advocates";
+import { NextResponse } from "next/server";
 
 export async function POST() {
-  const records = await db.insert(advocates).values(advocateData).returning();
-
-  return Response.json({ advocates: records });
+  // If it was a small team, I'd just tell them directly and delete this file
+  return NextResponse.json(
+    { message: 'Please use `npm run seed`' },
+    { status: 403 } 
+  );
 }
