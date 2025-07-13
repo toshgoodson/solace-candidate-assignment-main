@@ -16,3 +16,7 @@ Just so there's no surprises with the encoding and the locale.
 
 For development, set `export DATABASE_URL=postgresql://postgres:password@127.0.0.1:5432/solaceassignment`
 
+# Changelog notes
+(I can already see some obvious issues with the main page (especially the `innerHTML` usage); but instead of tackling those directly, I'll work through them as I update the UI to something a little bit more polished)
+(I also see that I'm going to need to add some pagination since the advocates GET just returns everything)
+- 
