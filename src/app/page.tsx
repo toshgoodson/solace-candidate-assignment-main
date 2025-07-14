@@ -2,48 +2,55 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Advocate } from "@/db/schema";
 import { ChangeEvent, useEffect, useState } from "react";
 
 export default function Home() {
   const [advocates, setAdvocates] = useState<Advocate[]>([]);
-  const [filteredAdvocates, setFilteredAdvocates] = useState<Advocate[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [page, setPage] = useState(1);
+  const [pageCount, setPageCount] = useState(1);
 
   useEffect(() => {
     console.log("fetching advocates...");
-    fetch("/api/advocates").then((response) => {
+    const params = new URLSearchParams();
+    params.append("search", searchTerm);
+    params.append("page", page.toString());
+    fetch(`/api/advocates?${params}`).then((response) => {
       response.json().then((jsonResponse) => {
         setAdvocates(jsonResponse.advocates);
-        setFilteredAdvocates(jsonResponse.advocates);
+        setPageCount(jsonResponse.pagination.pageCount);
       });
     });
-  }, []);
+  }, [searchTerm, page]);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value;
 
     console.log("filtering advocates...");
-    const filteredAdvocates = advocates.filter((advocate) => {
-      return (
-        advocate.firstName.includes(term) ||
-        advocate.lastName.includes(term) ||
-        advocate.city.includes(term) ||
-        advocate.degree.includes(term) ||
-        advocate.specialties.includes(term) ||
-        advocate.yearsOfExperience.toString().includes(term)
-      );
-    });
-
     setSearchTerm(term);
-    setFilteredAdvocates(filteredAdvocates);
+    setPage(1);
   };
 
   const onClick = () => {
-    console.log(advocates);
-    setFilteredAdvocates(advocates);
+    setSearchTerm('');
   };
+
+  const onClickNext = () => {
+    setPage((currentPage) => {
+      return Math.min(currentPage + 1, pageCount)
+    })
+  };
+  const onClickPrev = () => {
+    setPage((currentPage) => {
+      return Math.max(currentPage - 1, 0)
+    })
+  };
+  const onClickPage = (page: number) => {
+    setPage(page)
+  }
 
   return (
     <main className="container pt-8">
@@ -58,8 +65,7 @@ export default function Home() {
           <Button onClick={onClick}>Reset Search</Button>
         </div>
       </div>
-
-      <Table>
+      <Table className="mb-8">
         <TableHeader>
           <TableRow>
             <TableHead>First Name</TableHead>
@@ -72,7 +78,7 @@ export default function Home() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {filteredAdvocates.map((advocate) => {
+          {advocates.map((advocate) => {
             return (
               <TableRow key={advocate.id}>
                 <TableCell>{advocate.firstName}</TableCell>
@@ -91,6 +97,21 @@ export default function Home() {
           })}
         </TableBody>
       </Table>
+      <Pagination className="mb-8">
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious href="#" onClick={onClickPrev} />
+        </PaginationItem>
+        {new Array(pageCount).fill(undefined).map((_, idx) => 
+          <PaginationItem key={idx}>
+            <PaginationLink  href="#" isActive={page === idx + 1} onClick={() => onClickPage(idx + 1)}>{idx + 1}</PaginationLink>
+          </PaginationItem>
+        )}
+        <PaginationItem>
+          <PaginationNext href="#" onClick={onClickNext}/>
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
     </main>
   );
 }
