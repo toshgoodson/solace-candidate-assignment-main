@@ -22,3 +22,4 @@ For development, set `export DATABASE_URL=postgresql://postgres:password@127.0.0
 - Add typing for advocate schema
 - Slightly nicer UI for table and search
 - Use controlled input for search field
+- Paginated API results with indexed text search

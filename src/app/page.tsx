@@ -15,8 +15,8 @@ export default function Home() {
     console.log("fetching advocates...");
     fetch("/api/advocates").then((response) => {
       response.json().then((jsonResponse) => {
-        setAdvocates(jsonResponse.data);
-        setFilteredAdvocates(jsonResponse.data);
+        setAdvocates(jsonResponse.advocates);
+        setFilteredAdvocates(jsonResponse.advocates);
       });
     });
   }, []);
