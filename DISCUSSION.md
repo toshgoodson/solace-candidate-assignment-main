@@ -16,3 +16,6 @@ Just so there's no surprises with the encoding and the locale.
 
 For development, set `export DATABASE_URL=postgresql://postgres:password@127.0.0.1:5432/solaceassignment`
 
+# Changelog notes
+- db/index.ts will now throw an error if DATABASE_URL is not set. (Having it return a stub of select is kind of an odd thing to do; there are better ways of stubbing out the db if we need to run tests/etc) (Fixes return type of setup() function)
+- Remove db seeding via the API (bad if we left that exposed publicly). Instead use `npm run seed` since that command was already mostly set up.
