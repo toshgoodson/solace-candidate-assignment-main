@@ -8,6 +8,14 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+	container: {
+      center: true,
+      padding: "1rem",
+      screens: {
+        "xl": "calc(1110px + 2rem)",
+        "2xl": "calc(1110px + 2rem)",
+      },
+    },
   	extend: {
   		backgroundImage: {
   			'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

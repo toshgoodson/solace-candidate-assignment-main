@@ -19,4 +19,6 @@ For development, set `export DATABASE_URL=postgresql://postgres:password@127.0.0
 # Changelog notes
 (I can already see some obvious issues with the main page (especially the `innerHTML` usage); but instead of tackling those directly, I'll work through them as I update the UI to something a little bit more polished)
 (I also see that I'm going to need to add some pagination since the advocates GET just returns everything)
-- 
+- Add typing for advocate schema
+- Slightly nicer UI for table and search
+- Use controlled input for search field
